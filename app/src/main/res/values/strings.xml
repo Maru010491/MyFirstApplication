@@ -1,3 +1,14 @@
 <resources>
-    <string name="app_name">My Application2</string>
+    <string name="app_name">FilmSearch</string>
+    <string name="page_title">Search it!</string>
+
+    <string name="posters">Постеры предоставлены http://www.movieposters.com/</string>
+
+    <string name="menu">Меню</string>
+    <string name="favourite">Избранное</string>
+    <string name="late">Посмотреть позже</string>
+    <string name="podborki">Подборки</string>
+    <string name="settings">Настройки</string>
+    <string name="search">Search</string>
+
 </resources>
