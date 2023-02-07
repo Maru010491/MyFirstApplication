@@ -1,45 +1,44 @@
 package com.example.myapplication2
+
+import FilmViewHolder
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-class FilmListRecyclerAdapter(private val clickListener: OnItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    //Здесь у нас хранится список элементов для RV
+class FilmListRecyclerAdapter(
+    private val clickListener: OnItemClickListener
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
     private val items = mutableListOf<Film>()
 
-    //Этот метод нужно переопределить на возврат количества элементов в списке RV
     override fun getItemCount() = items.size
 
-    //В этом методе мы привязываем наш ViewHolder и передаем туда "надутую" верстку нашего фильма
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilmViewHolder {
-        return FilmViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.film_item, parent, false))
+        val inflater = LayoutInflater
+            .from(parent.context)
+            .inflate(R.layout.film_item, parent, false)
+        return FilmViewHolder(inflater)
     }
 
-    //В этом методе будет привязка полей из объекта Film к View из film_item.xml
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is FilmViewHolder -> {
-                holder.bind(items[position])
-
+                val item = items[position]
+                holder.bind(item)
+                holder.itemView.setOnClickListener {
+                    clickListener.click(item)
+                }
             }
         }
     }
 
-    //Метод для добавления объектов в наш список
     fun addItems(list: List<Film>) {
-        //Сначала очищаем(если не реализовать DiffUtils)
         items.clear()
-        //Добавляем
         items.addAll(list)
-        //Уведомляем RV, что пришел новый список, и ему нужно заново все "привязывать"
         notifyDataSetChanged()
     }
+}
 
-
-    //Интерфейс для обработки кликов
-    interface OnItemClickListener {
-        fun click(film: Film)
-    }
-
-
+interface OnItemClickListener {
+    fun click(film: Film)
 }
