@@ -10,27 +10,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication2.fragment.DetailsFragment
+import com.example.myapplication2.fragment.HomeFragment
 import kotlinx.parcelize.Parcelize
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var topAppBar: MaterialToolbar
     private lateinit var bottomNavigation: BottomNavigationView
-    private lateinit var filmsAdapter: FilmListRecyclerAdapter
-
-    private lateinit var mainRecycler: RecyclerView
-
-    private val filmsDataBase = listOf(
-        Film("Александр", R.drawable.poster_1, "Спустя 40 лет после гибели Александра пожилой Птолемей, один из ближайших соратников Македонского, ставший после его смерти наместником Египта, решает рассказать и записать историю побед великого полководца.\n" +
-                " В течение восьми лет войско Александра Великого двигалось на Восток, к берегам мирового Океана.\n"),
-        Film("Храброе сердце", R.drawable.poster_2, "Действие фильма начинается в 1280 году в Шотландии. \n" +
-                "Это история легендарного национального героя Уильяма Уоллеса, посвятившего себя борьбе с англичанами при короле Эдварде Длинноногом.\n"),
-        Film("Гладиатор", R.drawable.poster_3, "В великой Римской империи не было военачальника, равного генералу Максимусу. \n" +
-                "Непобедимые легионы, которыми командовал этот благородный воин, боготворили его и могли последовать за ним даже в ад."),
-        Film("Одиссей", R.drawable.poster_1, "Год за годом греки сражались под стенами Трои. Тысячи воинов полегли убитыми. Никто не знал, на чьей стороне боги. \n" +
-                "Греки роптали. Тогда их хитроумный царь Одиссей придумал, как проникнуть в Трою."),
-        Film("Троя", R.drawable.poster_2, "1193 год до нашей эры. Парис украл прекрасную Елену, жену царя Спарты Менелая. За честь Менелая вступается его брат – царь Агамемнон."),
-    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,27 +25,11 @@ class MainActivity : AppCompatActivity() {
         initViews()
         setListeners()
 
-        val itemClickListener = object : OnItemClickListener {
-            override fun click(film: Film) {
-                val bundle = Bundle()
-                bundle.putParcelable("film", film)
-                val intent = Intent(this@MainActivity, DetailsActivity::class.java)
-                intent.putExtras(bundle)
-                startActivity(intent)
-            }
-        }
-
-        filmsAdapter = FilmListRecyclerAdapter(itemClickListener)
-
-        mainRecycler = findViewById(R.id.main_recycler)
-
-        mainRecycler.apply {
-            adapter = filmsAdapter
-            layoutManager = LinearLayoutManager(this@MainActivity)
-            val decorator = TopSpacingItemDecoration(8)
-            addItemDecoration(decorator)
-        }
-        filmsAdapter.addItems(filmsDataBase)
+        supportFragmentManager
+            .beginTransaction()
+            .add(R.id.fragment_placeholder, HomeFragment())
+            .addToBackStack(null)
+            .commit()
     }
 
     private fun initViews() {
@@ -95,6 +66,24 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
+    }
+
+    fun launchDetailsFragment(film: Film) {
+        //Создаем "посылку"
+        val bundle = Bundle()
+        //Кладем наш фильм в "посылку"
+        bundle.putParcelable("film", film)
+        //Кладем фрагмент с деталями в перменную
+        val fragment = DetailsFragment()
+        //Прикрепляем нашу "посылку" к фрагменту
+        fragment.arguments = bundle
+
+        //Запускаем фрагмент
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_placeholder, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 }
 
