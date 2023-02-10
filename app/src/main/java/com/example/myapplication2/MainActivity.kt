@@ -1,28 +1,40 @@
 package com.example.myapplication2
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.widget.Toast
-import androidx.annotation.StringRes
+import android.content.Intent
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
+import android.os.Bundle
+import android.os.Parcelable
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication2.fragment.DetailsFragment
+import com.example.myapplication2.fragment.HomeFragment
+import kotlinx.parcelize.Parcelize
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var topAppBar: MaterialToolbar
-    private lateinit var bottom_navigation: BottomNavigationView
+    private lateinit var bottomNavigation: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initViews()
         setListeners()
+
+        supportFragmentManager
+            .beginTransaction()
+            .add(R.id.fragment_placeholder, HomeFragment())
+            .addToBackStack(null)
+            .commit()
     }
 
     private fun initViews() {
         topAppBar = findViewById(R.id.topAppBar)
-        bottom_navigation = findViewById(R.id.bottom_navigation)
+        bottomNavigation = findViewById(R.id.bottom_navigation)
     }
 
     private fun setListeners() {
@@ -36,7 +48,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        bottom_navigation.setOnNavigationItemSelectedListener {
+        bottomNavigation.setOnNavigationItemSelectedListener {
 
             when (it.itemId) {
                 R.id.app_bar_favourites -> {
@@ -55,4 +67,29 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    fun launchDetailsFragment(film: Film) {
+        //Создаем "посылку"
+        val bundle = Bundle()
+        //Кладем наш фильм в "посылку"
+        bundle.putParcelable("film", film)
+        //Кладем фрагмент с деталями в перменную
+        val fragment = DetailsFragment()
+        //Прикрепляем нашу "посылку" к фрагменту
+        fragment.arguments = bundle
+
+        //Запускаем фрагмент
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_placeholder, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
 }
+
+@Parcelize
+data class Film(
+    val title: String,
+    val poster: Int,
+    val description: String
+): Parcelable
