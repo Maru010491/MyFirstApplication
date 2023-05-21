@@ -5,9 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication2.*
+import java.util.Locale
 
 
 class HomeFragment : Fragment() {
@@ -26,6 +28,14 @@ class HomeFragment : Fragment() {
 
     private lateinit var filmsAdapter: FilmListRecyclerAdapter
     private lateinit var mainRecycler: RecyclerView
+    private lateinit var search_view: SearchView
+
+
+    val itemClickListener = object : OnItemClickListener {
+        override fun click(film: Film) {
+            (requireActivity() as MainActivity).launchDetailsFragment(film)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,17 +44,44 @@ class HomeFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
         mainRecycler = view.findViewById(R.id.main_recycler)
+        search_view = view.findViewById(R.id.search_view)
 
         return view
+
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        val itemClickListener = object : OnItemClickListener {
-            override fun click(film: Film) {
-                (requireActivity() as MainActivity).launchDetailsFragment(film)
-            }
+        search_view.setOnClickListener {
+            search_view.isIconified = false
         }
+
+        search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                if (newText.isEmpty()) {
+                    filmsAdapter.addItems(filmsDataBase)
+                    return true
+                }
+                val result = filmsDataBase.filter {
+                    it.title.toLowerCase(Locale.getDefault())
+                        .contains(newText.toLowerCase(Locale.getDefault()))
+                }
+                filmsAdapter.addItems(result)
+                return true
+            }
+        })
+
+
+        initRecyckler()
+
+    }
+
+    fun initRecyckler() {
 
         filmsAdapter = FilmListRecyclerAdapter(itemClickListener)
 
