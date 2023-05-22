@@ -1,14 +1,25 @@
 package com.example.myapplication2.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.transition.Scene
+import android.transition.Slide
+import android.transition.TransitionManager
+import android.transition.TransitionSet
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication2.*
+import com.example.myapplication2.Film
+import com.example.myapplication2.FilmListRecyclerAdapter
+import com.example.myapplication2.MainActivity
+import com.example.myapplication2.OnItemClickListener
+import com.example.myapplication2.R
+import com.example.myapplication2.TopSpacingItemDecoration
 import java.util.Locale
 
 
@@ -29,6 +40,7 @@ class HomeFragment : Fragment() {
     private lateinit var filmsAdapter: FilmListRecyclerAdapter
     private lateinit var mainRecycler: RecyclerView
     private lateinit var search_view: SearchView
+    private lateinit var home_fragment_root: ViewGroup
 
 
     val itemClickListener = object : OnItemClickListener {
@@ -37,21 +49,35 @@ class HomeFragment : Fragment() {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        retainInstance = true
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
-        mainRecycler = view.findViewById(R.id.main_recycler)
-        search_view = view.findViewById(R.id.search_view)
+        home_fragment_root = view.findViewById(R.id.home_fragment_root)
 
         return view
-
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        super.onViewCreated(view, savedInstanceState)
+
+        val scene = Scene.getSceneForLayout(home_fragment_root, R.layout.merge_home_screen_content, requireContext())
+        val searchSlide = Slide(Gravity.TOP).addTarget(R.id.search_view)
+        val recyclerSlide = Slide(Gravity.BOTTOM).addTarget(R.id.main_recycler)
+        val customTransition = TransitionSet().apply {
+            duration = 500
+            addTransition(recyclerSlide)
+            addTransition(searchSlide)
+        }
+        TransitionManager.go(scene, customTransition)
 
         search_view.setOnClickListener {
             search_view.isIconified = false
