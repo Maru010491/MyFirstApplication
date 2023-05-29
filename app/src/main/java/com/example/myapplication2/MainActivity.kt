@@ -81,7 +81,6 @@ class MainActivity : AppCompatActivity() {
         //Запускаем фрагмент
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.fragment_placeholder, fragment)
             .addToBackStack(null)
             .commit()
     }

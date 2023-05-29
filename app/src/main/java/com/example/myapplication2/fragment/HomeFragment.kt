@@ -1,5 +1,6 @@
 package com.example.myapplication2.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.transition.Scene
 import android.transition.Slide
@@ -10,7 +11,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -54,6 +54,7 @@ class HomeFragment : Fragment() {
         retainInstance = true
     }
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -66,18 +67,20 @@ class HomeFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         super.onViewCreated(view, savedInstanceState)
 
         val scene = Scene.getSceneForLayout(home_fragment_root, R.layout.merge_home_screen_content, requireContext())
         val searchSlide = Slide(Gravity.TOP).addTarget(R.id.search_view)
         val recyclerSlide = Slide(Gravity.BOTTOM).addTarget(R.id.main_recycler)
         val customTransition = TransitionSet().apply {
-            duration = 500
+            duration = 2500
             addTransition(recyclerSlide)
             addTransition(searchSlide)
         }
         TransitionManager.go(scene, customTransition)
+
+        search_view = view.findViewById(R.id.search_view)
+        mainRecycler = view.findViewById(R.id.main_recycler)
 
         search_view.setOnClickListener {
             search_view.isIconified = false
@@ -103,11 +106,11 @@ class HomeFragment : Fragment() {
         })
 
 
-        initRecyckler()
+        initRecycler()
 
     }
 
-    fun initRecyckler() {
+    private fun initRecycler() {
 
         filmsAdapter = FilmListRecyclerAdapter(itemClickListener)
 
