@@ -5,9 +5,11 @@
     <string name="posters">Постеры предоставлены http://www.movieposters.com/</string>
 
     <string name="menu">Меню</string>
-    <string name="favourite">Избранное</string>
-    <string name="late">Посмотреть позже</string>
-    <string name="podborki">Подборки</string>
+    <string name="menu_favorites_title_text">Избранное</string>
+    <string name="menu_watch_later_title_text">Посмотреть позже</string>
+    <string name="menu_selections_title_text">Подборки</string>
+    <string name="menu_home_title_text">Главная</string>
+
     <string name="settings">Настройки</string>
     <string name="search">Search</string>
     <!-- TODO: Remove or change this placeholder text -->
