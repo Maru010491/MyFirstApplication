@@ -1,12 +1,10 @@
 package com.example.myapplication2.fragment
 
-
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.SearchView
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication2.AnimationHelper
@@ -16,10 +14,12 @@ import com.example.myapplication2.MainActivity
 import com.example.myapplication2.OnItemClickListener
 import com.example.myapplication2.R
 import com.example.myapplication2.TopSpacingItemDecoration
-import java.util.Locale
 
+class FavouritesFragment : Fragment(){
 
-class HomeFragment : Fragment() {
+    private lateinit var filmsAdapter: FilmListRecyclerAdapter
+
+    private lateinit var favourites_recycler: RecyclerView
 
     private val filmsDataBase = listOf(
         Film("Александр", R.drawable.poster_1, "Спустя 40 лет после гибели Александра пожилой Птолемей, один из ближайших соратников Македонского, ставший после его смерти наместником Египта, решает рассказать и записать историю побед великого полководца.\n" +
@@ -33,67 +33,37 @@ class HomeFragment : Fragment() {
         Film("Троя", R.drawable.poster_2, "1193 год до нашей эры. Парис украл прекрасную Елену, жену царя Спарты Менелая. За честь Менелая вступается его брат – царь Агамемнон."),
     )
 
-    private lateinit var filmsAdapter: FilmListRecyclerAdapter
-    private lateinit var mainRecycler: RecyclerView
-    private lateinit var search_view: SearchView
-    private lateinit var home_fragment_root: ViewGroup
-
-
-    val itemClickListener = object : OnItemClickListener {
-        override fun click(film: Film) {
-            (requireActivity() as MainActivity).launchDetailsFragment(film)
-        }
-    }
-
-   override fun onCreateView(
+    override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_home, container, false)
-        home_fragment_root = view.findViewById(R.id.home_fragment_root)
-        return view
-    }
 
+        return inflater.inflate(R.layout.fragment_favourites, container, false)
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        search_view = view.findViewById(R.id.search_view)
-        mainRecycler = view.findViewById(R.id.main_recycler)
+        val favoritesList = mutableListOf<Film>()
 
-        AnimationHelper.AnimationHelper.performFragmentCircularRevealAnimation(home_fragment_root, requireActivity(), 1)
+        favoritesList.addAll(filmsDataBase)
 
-        search_view.setOnClickListener {
-            search_view.isIconified = false
-        }
+        val favourites_fragment_root = view.findViewById<View>(R.id.favourites_fragment_root)
+        AnimationHelper.AnimationHelper.performFragmentCircularRevealAnimation(favourites_fragment_root, requireActivity(),2)
 
-        search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return true
-            }
-            override fun onQueryTextChange(newText: String): Boolean {
-                if (newText.isEmpty()) {
-                    filmsAdapter.addItems(filmsDataBase)
-                    return true
+        favourites_recycler = view.findViewById(R.id.favorites_recycler)
+
+        favourites_recycler.apply {
+            filmsAdapter = FilmListRecyclerAdapter(object : OnItemClickListener {
+                override fun click(film: Film) {
+                    (requireActivity() as MainActivity).launchDetailsFragment(film)
                 }
-                val result = filmsDataBase.filter {
-                    it.title.toLowerCase(Locale.getDefault())
-                        .contains(newText.toLowerCase(Locale.getDefault()))
-                }
-                filmsAdapter.addItems(result)
-                return true
-            }
-        })
-        initRecycler()
-    }
-
-    private fun initRecycler() {
-        filmsAdapter = FilmListRecyclerAdapter(itemClickListener)
-        mainRecycler.apply {
+            })
             adapter = filmsAdapter
-            layoutManager = LinearLayoutManager(requireActivity())
+            layoutManager = LinearLayoutManager(requireContext())
             val decorator = TopSpacingItemDecoration(8)
             addItemDecoration(decorator)
         }
-        filmsAdapter.addItems(filmsDataBase)
+
+        filmsAdapter.addItems(favoritesList)
     }
 }
