@@ -38,8 +38,7 @@ class HomeFragment : Fragment() {
     private lateinit var search_view: SearchView
     private lateinit var home_fragment_root: ViewGroup
 
-
-    val itemClickListener = object : OnItemClickListener {
+    private val itemClickListener = object : OnItemClickListener {
         override fun click(film: Film) {
             (requireActivity() as MainActivity).launchDetailsFragment(film)
         }
@@ -52,7 +51,7 @@ class HomeFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         home_fragment_root = view.findViewById(R.id.home_fragment_root)
         return view
-    }
+       }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -60,7 +59,15 @@ class HomeFragment : Fragment() {
         search_view = view.findViewById(R.id.search_view)
         mainRecycler = view.findViewById(R.id.main_recycler)
 
-        AnimationHelper.AnimationHelper.performFragmentCircularRevealAnimation(home_fragment_root, requireActivity(), 1)
+        AnimationHelper.AnimationHelper
+            .performFragmentCircularRevealAnimation(
+                home_fragment_root,
+                requireActivity(),
+                1
+            )
+
+        filmsAdapter = FilmListRecyclerAdapter(itemClickListener)
+        filmsAdapter.addItems(filmsDataBase)
 
         search_view.setOnClickListener {
             search_view.isIconified = false
@@ -84,10 +91,10 @@ class HomeFragment : Fragment() {
             }
         })
         initRecycler()
+
     }
 
     private fun initRecycler() {
-        filmsAdapter = FilmListRecyclerAdapter(itemClickListener)
         mainRecycler.apply {
             adapter = filmsAdapter
             layoutManager = LinearLayoutManager(requireActivity())

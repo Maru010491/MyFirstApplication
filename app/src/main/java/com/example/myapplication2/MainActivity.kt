@@ -63,13 +63,13 @@ class MainActivity() : AppCompatActivity() {
                 else -> false
             }
         }
-
     }
+
     private fun initNavigation() {
             bottomNavigation.setOnNavigationItemSelectedListener {
 
                 when (it.itemId) {
-                    R.id.bottom_navigation -> {
+                    R.id.home -> {
                         val tag = "home"
                         val fragment = checkFragmentExistence(tag)
                         changeFragment( fragment ?: HomeFragment(), tag)
