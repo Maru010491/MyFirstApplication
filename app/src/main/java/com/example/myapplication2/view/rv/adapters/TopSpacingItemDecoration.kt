@@ -1,4 +1,4 @@
-package com.example.myapplication2
+package com.example.myapplication2.view.rv.adapters
 import android.content.res.Resources
 import android.graphics.Rect
 import android.view.View
