@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication2.utils.AnimationHelper
-import com.example.myapplication2.Film
+import com.example.myapplication2.utils.Film
 import com.example.myapplication2.FilmListRecyclerAdapter
 import com.example.myapplication2.MainActivity
 import com.example.myapplication2.OnItemClickListener

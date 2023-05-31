@@ -4,12 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import com.example.myapplication2.Film
-import com.example.myapplication2.R
+import com.bumptech.glide.Glide
+import com.example.myapplication2.utils.Film
+import com.example.myapplication2.data.ApiConstants
 import com.example.myapplication2.databinding.FragmentDetailsBinding
 
 class DetailsFragment : Fragment() {
@@ -28,7 +26,10 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val film = arguments?.get("film") as Film
-        binding.detailsPoster.setImageResource(film.poster)
+        Glide.with(this)
+            .load(ApiConstants.IMAGES_URL + "w780" + film.poster)
+            .centerCrop()
+            .into(binding.detailsPoster)
         binding.detailsToolbar.title = film.title
         binding.detailsDescription.text = film.description
     }

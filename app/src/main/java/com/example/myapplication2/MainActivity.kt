@@ -1,10 +1,6 @@
 package com.example.myapplication2
 
-import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.bottomnavigation.BottomNavigationView
-
 import android.os.Bundle
-import android.os.Parcel
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +8,7 @@ import com.example.myapplication2.view.fragment.DetailsFragment
 import com.example.myapplication2.view.fragment.HomeFragment
 import androidx.fragment.app.Fragment
 import com.example.myapplication2.databinding.ActivityMainBinding
+import com.example.myapplication2.utils.Film
 import com.example.myapplication2.view.fragment.FavouritesFragment
 import com.example.myapplication2.view.fragment.SelectionsFragment
 import com.example.myapplication2.view.fragment.WatchLaterFragment
