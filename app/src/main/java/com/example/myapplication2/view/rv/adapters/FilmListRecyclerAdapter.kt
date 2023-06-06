@@ -1,15 +1,16 @@
 package com.example.myapplication2
 
-import FilmViewHolder
+import com.example.myapplication2.view.rv.viewholders.FilmViewHolder
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication2.utils.Film
 
 class FilmListRecyclerAdapter(
     private val clickListener: OnItemClickListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val items = mutableListOf<Film>()
+    val items = mutableListOf<Film>()
 
     override fun getItemCount() = items.size
 

@@ -5,7 +5,7 @@
     <string name="posters">Постеры предоставлены http://www.movieposters.com/</string>
 
     <string name="menu">Меню</string>
-    <string name="menu_favorites_title_text">Избранное</string>
+    <string name="menu_favourites_title_text">Избранное</string>
     <string name="menu_watch_later_title_text">Посмотреть позже</string>
     <string name="menu_selections_title_text">Подборки</string>
     <string name="menu_home_title_text">Главная</string>
@@ -14,5 +14,12 @@
     <string name="search">Search</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="menu_settings_title_text">Настройки</string>
+    <string name="radio_button_popular">Популярные</string>
+    <string name="radio_button_top_rated">Топ</string>
+    <string name="radio_button_upcoming">Скоро</string>
+    <string name="radio_button_playing">В кинотеатрах</string>
+    <string name="radio_group_header">Подборка на главном экране:
+    </string>
 
 </resources>
