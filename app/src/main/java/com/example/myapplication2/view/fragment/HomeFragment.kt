@@ -19,6 +19,7 @@ import com.example.myapplication2.databinding.FragmentHomeBinding
 import com.example.myapplication2.viewmodel.HomeFragmentViewModel
 import java.util.Locale
 
+
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
@@ -58,7 +59,9 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.filmsListLiveData.observe(viewLifecycleOwner) {
+
             filmsDataBase = it
+            filmsAdapter.addItems(it)
         }
 
         AnimationHelper.AnimationHelper
@@ -68,12 +71,20 @@ class HomeFragment : Fragment() {
                 1
             )
 
+
         filmsAdapter = FilmListRecyclerAdapter(itemClickListener)
         filmsAdapter.addItems(filmsDataBase)
         binding.searchView.setOnClickListener {
             binding.searchView.isIconified = false
         }
-
+         fun initPullToRefresh() {
+            binding.pullToRefresh.setOnRefreshListener {
+                filmsAdapter.items.clear()
+                viewModel.getFilms()
+                binding.pullToRefresh.isRefreshing = false
+            }
+        }
+        initPullToRefresh()
         binding.searchView.setOnQueryTextListener(
                     object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {

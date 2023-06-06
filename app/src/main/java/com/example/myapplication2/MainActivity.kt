@@ -11,6 +11,7 @@ import com.example.myapplication2.databinding.ActivityMainBinding
 import com.example.myapplication2.utils.Film
 import com.example.myapplication2.view.fragment.FavouritesFragment
 import com.example.myapplication2.view.fragment.SelectionsFragment
+import com.example.myapplication2.view.fragment.SettingsFragment
 import com.example.myapplication2.view.fragment.WatchLaterFragment
 
 class MainActivity() : AppCompatActivity() {
@@ -83,6 +84,12 @@ class MainActivity() : AppCompatActivity() {
                         val tag = "selections"
                         val fragment = checkFragmentExistence(tag)
                         changeFragment( fragment?: SelectionsFragment(), tag)
+                        true
+                    }
+                    R.id.settings -> {
+                        val tag = "settings"
+                        val fragment = checkFragmentExistence(tag)
+                        changeFragment( fragment?: SettingsFragment(), tag)
                         true
                     }
                     else -> false
