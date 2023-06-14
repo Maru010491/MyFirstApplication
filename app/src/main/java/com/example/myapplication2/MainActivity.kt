@@ -7,8 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication2.view.fragment.DetailsFragment
 import com.example.myapplication2.view.fragment.HomeFragment
 import androidx.fragment.app.Fragment
+import com.example.myapplication2.data.entity.Film
 import com.example.myapplication2.databinding.ActivityMainBinding
-import com.example.myapplication2.utils.Film
 import com.example.myapplication2.view.fragment.FavouritesFragment
 import com.example.myapplication2.view.fragment.SelectionsFragment
 import com.example.myapplication2.view.fragment.SettingsFragment

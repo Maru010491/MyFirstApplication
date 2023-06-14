@@ -6,14 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication2.utils.AnimationHelper
-import com.example.myapplication2.utils.Film
 import com.example.myapplication2.FilmListRecyclerAdapter
 import com.example.myapplication2.MainActivity
 import com.example.myapplication2.OnItemClickListener
+import com.example.myapplication2.data.entity.Film
 import com.example.myapplication2.view.rv.adapters.TopSpacingItemDecoration
 import com.example.myapplication2.databinding.FragmentHomeBinding
 import com.example.myapplication2.viewmodel.HomeFragmentViewModel
@@ -77,6 +79,11 @@ class HomeFragment : Fragment() {
         binding.searchView.setOnClickListener {
             binding.searchView.isIconified = false
         }
+        viewModel.showProgressBar.observe(
+            viewLifecycleOwner, Observer<Boolean> {
+            binding.progressBar.isVisible = it
+        })
+
          fun initPullToRefresh() {
             binding.pullToRefresh.setOnRefreshListener {
                 filmsAdapter.items.clear()
@@ -116,4 +123,5 @@ class HomeFragment : Fragment() {
         }
         filmsAdapter.addItems(filmsDataBase)
     }
+
 }

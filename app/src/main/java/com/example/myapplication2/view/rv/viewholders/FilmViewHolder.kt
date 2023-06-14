@@ -5,9 +5,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.myapplication2.utils.Film
 import com.example.myapplication2.R
 import com.example.myapplication2.data.ApiConstants
+import com.example.myapplication2.data.entity.Film
 import com.example.myapplication2.view.customviews.RatingDonutView
 
 class FilmViewHolder(private val itemView: View) : RecyclerView.ViewHolder(itemView) {

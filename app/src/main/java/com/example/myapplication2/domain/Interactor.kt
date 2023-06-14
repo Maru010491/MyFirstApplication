@@ -1,13 +1,15 @@
 package com.example.myapplication2.domain
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import com.example.myapplication2.MainRepository
 import com.example.myapplication2.data.PreferenceProvider
 import com.example.myapplication2.data.entity.TmdbResultsDto
 import com.example.myapplication2.data.TmdbApi
+import com.example.myapplication2.data.entity.Film
 import com.example.myapplication2.utils.API
 import com.example.myapplication2.utils.Converter
-import com.example.myapplication2.utils.Film
+
 import com.example.myapplication2.viewmodel.HomeFragmentViewModel
 import retrofit2.Call
 import retrofit2.Callback
@@ -29,10 +31,8 @@ class Interactor(
             ) {
                 val list = Converter.convertApiListToDTOList(response.body()?.tmdbFilms)
                 //Кладем фильмы в бд
-                list.forEach {
-                    repo.putToDb(film = it)
-                }
-                callback.onSuccess(list)
+                repo.putToDb(list)
+                callback.onSuccess()
             }
 
             override fun onFailure(call: Call<TmdbResultsDto>, t: Throwable) {
@@ -47,5 +47,6 @@ class Interactor(
 
     fun getDefaultCategoryFromPreferences() = preferences.getDefaultCategory()
 
-    fun getFilmsFromDB(): List<Film> = repo.getAllFromDB()
+    fun getFilmsFromDB(): LiveData<List<Film>> =
+        repo.getAllFromDB()
 }

@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
-import com.example.myapplication2.utils.Film
 import com.example.myapplication2.data.ApiConstants
+import com.example.myapplication2.data.entity.Film
 import com.example.myapplication2.databinding.FragmentDetailsBinding
 
 class DetailsFragment : Fragment() {

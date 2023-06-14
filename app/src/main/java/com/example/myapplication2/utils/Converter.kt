@@ -1,5 +1,6 @@
 package com.example.myapplication2.utils
 
+import com.example.myapplication2.data.entity.Film
 import com.example.myapplication2.data.entity.TmdbFilm
 
 object Converter {

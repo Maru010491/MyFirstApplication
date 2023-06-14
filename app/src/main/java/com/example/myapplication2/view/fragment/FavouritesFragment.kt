@@ -5,8 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.myapplication2.data.entity.Film
 import com.example.myapplication2.utils.AnimationHelper
-import com.example.myapplication2.utils.Film
 import com.example.myapplication2.databinding.FragmentFavouritesBinding
 
 class FavouritesFragment : Fragment(){
