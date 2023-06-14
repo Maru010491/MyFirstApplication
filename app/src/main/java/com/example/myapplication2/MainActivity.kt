@@ -1,29 +1,26 @@
 package com.example.myapplication2
 
-import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.bottomnavigation.BottomNavigationView
-
 import android.os.Bundle
-import android.os.Parcel
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.myapplication2.fragment.DetailsFragment
-import com.example.myapplication2.fragment.HomeFragment
+import com.example.myapplication2.view.fragment.DetailsFragment
+import com.example.myapplication2.view.fragment.HomeFragment
 import androidx.fragment.app.Fragment
-import com.example.myapplication2.fragment.FavouritesFragment
-import com.example.myapplication2.fragment.SelectionsFragment
-import com.example.myapplication2.fragment.WatchLaterFragment
+import com.example.myapplication2.data.entity.Film
+import com.example.myapplication2.databinding.ActivityMainBinding
+import com.example.myapplication2.view.fragment.FavouritesFragment
+import com.example.myapplication2.view.fragment.SelectionsFragment
+import com.example.myapplication2.view.fragment.SettingsFragment
+import com.example.myapplication2.view.fragment.WatchLaterFragment
 
 class MainActivity() : AppCompatActivity() {
-
-    private lateinit var topAppBar: MaterialToolbar
-    private lateinit var bottomNavigation: BottomNavigationView
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        initViews()
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         setListeners()
 
         supportFragmentManager
@@ -47,13 +44,8 @@ class MainActivity() : AppCompatActivity() {
             .commit()
     }
 
-    private fun initViews() {
-        topAppBar = findViewById(R.id.topAppBar)
-        bottomNavigation = findViewById(R.id.bottom_navigation)
-    }
-
     private fun setListeners() {
-        topAppBar.setOnMenuItemClickListener {
+        binding.topAppBar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.menu_main_setting -> {
                     Toast.makeText(this, "Настройки", Toast.LENGTH_SHORT).show()
@@ -63,13 +55,13 @@ class MainActivity() : AppCompatActivity() {
                 else -> false
             }
         }
-
     }
+
     private fun initNavigation() {
-            bottomNavigation.setOnNavigationItemSelectedListener {
+        binding.bottomNavigation.setOnNavigationItemSelectedListener {
 
                 when (it.itemId) {
-                    R.id.bottom_navigation -> {
+                    R.id.home -> {
                         val tag = "home"
                         val fragment = checkFragmentExistence(tag)
                         changeFragment( fragment ?: HomeFragment(), tag)
@@ -92,6 +84,12 @@ class MainActivity() : AppCompatActivity() {
                         val tag = "selections"
                         val fragment = checkFragmentExistence(tag)
                         changeFragment( fragment?: SelectionsFragment(), tag)
+                        true
+                    }
+                    R.id.settings -> {
+                        val tag = "settings"
+                        val fragment = checkFragmentExistence(tag)
+                        changeFragment( fragment?: SettingsFragment(), tag)
                         true
                     }
                     else -> false
