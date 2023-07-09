@@ -67,7 +67,6 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-
         /*AnimationHelper.AnimationHelper
             .performFragmentCircularRevealAnimation(
                 binding.homeFragmentRoot,
