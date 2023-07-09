@@ -19,12 +19,18 @@ import com.example.myapplication2.data.entity.Film
 import com.example.myapplication2.view.rv.adapters.TopSpacingItemDecoration
 import com.example.myapplication2.databinding.FragmentHomeBinding
 import com.example.myapplication2.viewmodel.HomeFragmentViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Locale
 
 
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
+    private lateinit var scope: CoroutineScope
 
     private val viewModel by lazy {
         ViewModelProvider.NewInstanceFactory().create(
@@ -60,18 +66,14 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.filmsListLiveData.observe(viewLifecycleOwner) {
 
-            filmsDataBase = it
-            filmsAdapter.addItems(it)
-        }
 
-        AnimationHelper.AnimationHelper
+        /*AnimationHelper.AnimationHelper
             .performFragmentCircularRevealAnimation(
                 binding.homeFragmentRoot,
                 requireActivity(),
                 1
-            )
+            )*/
 
 
         filmsAdapter = FilmListRecyclerAdapter(itemClickListener)
@@ -79,10 +81,28 @@ class HomeFragment : Fragment() {
         binding.searchView.setOnClickListener {
             binding.searchView.isIconified = false
         }
-        viewModel.showProgressBar.observe(
-            viewLifecycleOwner, Observer<Boolean> {
-            binding.progressBar.isVisible = it
-        })
+        scope = CoroutineScope(Dispatchers.IO).also { scope ->
+            scope.launch {
+                viewModel.filmsListData.collect {
+                    withContext(Dispatchers.Main) {
+                        filmsAdapter.addItems(it)
+                        filmsDataBase = it
+                    }
+                }
+            }
+            scope.launch {
+                for (element in viewModel.showProgressBar) {
+                    launch(Dispatchers.Main) {
+                        binding.progressBar.isVisible = element
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        scope.cancel()
 
          fun initPullToRefresh() {
             binding.pullToRefresh.setOnRefreshListener {

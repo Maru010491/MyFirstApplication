@@ -14,6 +14,7 @@ import com.example.myapplication2.view.fragment.SelectionsFragment
 import com.example.myapplication2.view.fragment.SettingsFragment
 import com.example.myapplication2.view.fragment.WatchLaterFragment
 
+
 class MainActivity() : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
