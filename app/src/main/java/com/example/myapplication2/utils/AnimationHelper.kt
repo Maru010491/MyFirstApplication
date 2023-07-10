@@ -1,4 +1,4 @@
-package com.example.myapplication2
+package com.example.myapplication2.utils
 
 import android.app.Activity
 import android.view.View
@@ -14,7 +14,7 @@ class AnimationHelper {
 
     object AnimationHelper {
 
-        private const val menuItems = 4
+        private const val menuItems = 5
 
         fun performFragmentCircularRevealAnimation(rootView: View, activity: Activity, position: Int) {
 
