@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_favourites"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/favourites_fragment_root"
-    android:visibility="invisible"
-    tools:visibility="visible">
+    android:id="@+id/favourites_fragment_root">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/favorites_recycler"
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/film_item"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        android:text="123" />
 
-</FrameLayout>
+    <include
+        android:id="@+id/bottom_view"
+        layout="@layout/bottom_sheet" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
