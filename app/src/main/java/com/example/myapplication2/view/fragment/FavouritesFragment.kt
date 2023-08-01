@@ -12,7 +12,7 @@ import com.example.myapplication2.databinding.FragmentFavouritesBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.*
 
-class FavouritesFragment : Fragment(){
+class FavouritesFragment : Fragment() {
 
     private lateinit var binding: FragmentFavouritesBinding
     private val favouritesList: List<Film> = emptyList()
@@ -26,7 +26,7 @@ class FavouritesFragment : Fragment(){
             inflater, container, false
         )
         return binding.root
-       }
+    }
 
     @SuppressLint("WrongConstant")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,16 +41,12 @@ class FavouritesFragment : Fragment(){
             override fun onStateChanged(bottomSheet: View, newState: Int) {
 //                TODO("Not yet implemented")
             }
+
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
                 // handle onSlide
             }
         })
         bottomSheetBehavior.state = STATE_COLLAPSED
 
-        AnimationHelper.AnimationHelper
-            .performFragmentCircularRevealAnimation(
-                binding.favouritesFragmentRoot,
-                requireActivity(), 2
-            )
     }
 }

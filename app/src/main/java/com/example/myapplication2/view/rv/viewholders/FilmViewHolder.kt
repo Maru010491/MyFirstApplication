@@ -8,14 +8,18 @@ import com.bumptech.glide.Glide
 import com.example.myapplication2.R
 import com.example.myapplication2.data.ApiConstants
 import com.example.myapplication2.data.entity.Film
+import com.example.myapplication2.databinding.FilmItemBinding
 import com.example.myapplication2.view.customviews.RatingDonutView
 
 class FilmViewHolder(private val itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    private val title = itemView.findViewById<TextView>(R.id.title)
-    private val poster = itemView.findViewById<ImageView>(R.id.poster)
-    private val description = itemView.findViewById<TextView>(R.id.description)
-    private val ratingDonut = itemView.findViewById<RatingDonutView>(R.id.rating_donut)
+    private val filmItemBinding = FilmItemBinding.bind(itemView)
+    //Привязываем view из layout к переменным
+    private val title = filmItemBinding.title
+    private val poster = filmItemBinding.poster
+    private val description = filmItemBinding.description
+    //Вот здесь мы находим в верстке наш прогресс бар для рейтинга
+    private val ratingDonut = filmItemBinding.ratingDonut
 
 
     fun bind(film: Film) {

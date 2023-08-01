@@ -11,6 +11,10 @@ import com.example.myapplication2.utils.API
 import com.example.myapplication2.utils.Converter
 
 import com.example.myapplication2.viewmodel.HomeFragmentViewModel
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.schedulers.Schedulers
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -24,33 +28,35 @@ class Interactor(
     private val repo: MainRepository, private val retrofitService:
     TmdbApi, private val preferences: PreferenceProvider
 ) {
-    val scope: CoroutineScope = CoroutineScope(Dispatchers.IO)
-    var progressBarState = Channel<Boolean>(Channel.CONFLATED)
+    var progressBarState: BehaviorSubject<Boolean> = BehaviorSubject.create()
 
     fun getFilmsFromApi(page: Int) {
         //Показываем ProgressBar
-        scope.launch {
-            progressBarState.send(true)
-        }
+        progressBarState.onNext(true)
 
-            retrofitService.getFilms(
-                getDefaultCategoryFromPreferences(), API.KEY, "ru-RU", page
-            ).enqueue(object : Callback<TmdbResultsDto> {
+        retrofitService.getFilms(
+            getDefaultCategoryFromPreferences(),
+            API.KEY, "ru-RU", page
+        ).enqueue(object : Callback<TmdbResultsDto> {
+
             override fun onResponse(
-                call: Call<TmdbResultsDto>, response: Response<TmdbResultsDto>
+                call: Call<TmdbResultsDto>,
+                response: Response<TmdbResultsDto>
             ) {
+                Log.e("HomeFragmentViewModel", "LOADING SUCCESS")
                 val list = Converter.convertApiListToDTOList(response.body()?.tmdbFilms)
-                scope.launch {
+                Log.e("HomeFragmentViewModel", "LOADED LIST: $list")
+                Completable.fromSingle<List<Film>> {
                     repo.putToDb(list)
-                    progressBarState.send(false)
                 }
+                    .subscribeOn(Schedulers.io())
+                    .subscribe()
+                progressBarState.onNext(false)
             }
 
             override fun onFailure(call: Call<TmdbResultsDto>, t: Throwable) {
                 Log.e("HomeFragmentViewModel", "error: ${t.message}")
-                scope.launch {
-                    progressBarState.send(false)
-                }
+                progressBarState.onNext(false)
             }
         })
     }
@@ -60,5 +66,5 @@ class Interactor(
 
     fun getDefaultCategoryFromPreferences() = preferences.getDefaultCategory()
 
-    fun getFilmsFromDB(): Flow<List<Film>> = repo.getAllFromDB()
+    fun getFilmsFromDB(): Observable<List<Film>> = repo.getAllFromDB()
 }
