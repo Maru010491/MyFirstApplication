@@ -6,6 +6,7 @@ import com.example.myapplication2.data.ApiConstants
 import com.example.myapplication2.data.TmdbApi
 import dagger.Module
 import dagger.Provides
+import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -36,6 +37,8 @@ class RemoteModule {
         .baseUrl(ApiConstants.BASE_URL)
         //Добавляем конвертер
         .addConverterFactory(GsonConverterFactory.create())
+        //Добавляем поддержку RxJava
+        .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
         //Добавляем кастомный клиент
         .client(okHttpClient)
         .build()

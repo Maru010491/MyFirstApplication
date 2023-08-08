@@ -30,4 +30,5 @@ class HomeFragmentViewModel : ViewModel() {
         Log.d("HomeFragment", "loading films")
         interactor.getFilmsFromApi(1)
     }
+    fun getSearchResult(search: String) = interactor.getSearchResultFromApi(search)
 }

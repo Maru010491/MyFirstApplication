@@ -60,6 +60,15 @@ class Interactor(
             }
         })
     }
+
+    fun getSearchResultFromApi(search: String): Observable<List<Film>> =
+        retrofitService.getFilmFromSearch(API.KEY,
+        "ru-RU", search, 1
+    )
+        .map {
+            Converter.convertApiListToDTOList(it.tmdbFilms)
+        }
+
     fun saveDefaultCategoryToPreferences(category: String) {
         preferences.saveDefaultCategory(category)
     }
